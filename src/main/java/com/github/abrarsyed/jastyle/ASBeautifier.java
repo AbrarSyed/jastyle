@@ -111,6 +111,7 @@ public class ASBeautifier extends AbstractASBase
     private char currentNonLegalCh;
     private char prevNonLegalCh;
     private boolean useProperInnerClassIndenting = true;
+    protected final IndentContext indentContext = new IndentContext(this.useProperInnerClassIndenting);
 
     // variables set by ASFormatter - must be updated in activeBeautifierStack
     protected int inLineNumber;
@@ -935,6 +936,9 @@ public class ASBeautifier extends AbstractASBase
             spaceTabCount = inStatementIndentStack.peek();
         }
 
+        indentContext.setStack(this.headerStack);
+        indentContext.setLine(originalLine.toString());
+
         for (int i = 0; i < headerStack.size(); i++)
         {
             isInClass = false;
@@ -948,9 +952,9 @@ public class ASBeautifier extends AbstractASBase
             }
             else if (!(i > 0 && !headerStack.get(i - 1).equals(ASResource.AS_OPEN_BRACKET) && headerStack.get(i).equals(ASResource.AS_OPEN_BRACKET)))
             {
-                if (!this.useProperInnerClassIndenting || !headerStack.get(i).equals(ASResource.AS_STATIC))
+                if (indentContext.tryIndent(i, tabCount))
                 {
-                    ++tabCount;
+                    tabCount = indentContext.getIndent();
                 }
             }
 
