@@ -377,6 +377,13 @@ public class OptParser
             this.formatter.setUseProperInnerClassIndenting(Boolean.parseBoolean(temp));
         }
 
+        // proper generic spacing
+        else if (opt.startsWith("proper-generic-spacing="))
+        {
+            temp = opt.substring("proper-generic-spacing=".length());
+            this.formatter.setUseProperGenericSpacing(Boolean.parseBoolean(temp));
+        }
+
         else
         {
             error();

@@ -2366,6 +2366,13 @@ public class ASFormatter extends ASBeautifier
                 // for
                 // ->
                 && !((isInTemplate || isCharImmediatelyPostTemplate) && (newOperator.equals(ASResource.AS_LS) || newOperator.equals(ASResource.AS_GR))) && !(newOperator.equals(ASResource.AS_GCC_MIN_ASSIGN) && peekNextChar(currentLine, charNum + 1) == '>') && !(newOperator.equals(ASResource.AS_GR) && previousNonWSChar == '?') && !isInCase;
+        if (this.isUseProperGenericSpacing() && shouldPad)
+        {
+            if ((newOperator.equals(ASResource.AS_GR_GR) || newOperator.equals(ASResource.AS_LS) || newOperator.equals(ASResource.AS_GR)))
+            {
+                shouldPad = false;
+            }
+        }
 
         // pad before operator
         if (shouldPad && !isInBlParen && !(newOperator.equals(ASResource.AS_COLON) && !foundQuestionMark) && !(newOperator.equals(ASResource.AS_QUESTION) && isSharpStyle() // check for C# nullable type (e.g.

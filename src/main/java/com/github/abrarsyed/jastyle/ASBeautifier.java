@@ -111,6 +111,7 @@ public class ASBeautifier extends AbstractASBase
     private char currentNonLegalCh;
     private char prevNonLegalCh;
     private boolean useProperInnerClassIndenting = true;
+    private boolean useProperGenericSpacing = true;
 
     // variables set by ASFormatter - must be updated in activeBeautifierStack
     protected int inLineNumber;
@@ -657,6 +658,26 @@ public class ASBeautifier extends AbstractASBase
     public void setUseProperInnerClassIndenting(boolean useProperInnerClassIndenting)
     {
         this.useProperInnerClassIndenting = useProperInnerClassIndenting;
+    }
+
+    /**
+     * Check if we should use proper generic spacing
+     *
+     * @return if we should use proper generic spacing
+     */
+    public boolean isUseProperGenericSpacing()
+    {
+        return this.useProperGenericSpacing;
+    }
+
+    /**
+     * Set if we should use proper generic spacing
+     *
+     * @param useProperGenericSpacing if we should use proper generic spacing
+     */
+    public void setUseProperGenericSpacing(boolean useProperGenericSpacing)
+    {
+        this.useProperGenericSpacing = useProperGenericSpacing;
     }
 
     /**
