@@ -76,6 +76,11 @@ final class IndentContext
                             this.indent = this.previousIndent + 1;
                         }
                     }
+                } else if(!ASResource.AS_STATIC.equals(this.stack.get(this.stack.size() - 2))) {
+                    this.indent++;
+                    if(this.stack.containsValue(ASResource.AS_STATIC) && this.frequency(ASResource.AS_CLASS) >= 2) {
+                        this.indent--;
+                    }
                 }
             }
             else
@@ -85,5 +90,15 @@ final class IndentContext
         }
 
         return true;
+    }
+
+    private int frequency(final String token) {
+        int result = 0;
+        for(Map.Entry<Integer, String> entry : this.stack.entrySet()) {
+            if(entry.getValue().equals(token)) {
+                result++;
+            }
+        }
+        return result;
     }
 }
