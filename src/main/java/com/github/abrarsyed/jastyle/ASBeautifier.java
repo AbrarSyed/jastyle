@@ -110,7 +110,9 @@ public class ASBeautifier extends AbstractASBase
     private char currentNonSpaceCh;
     private char currentNonLegalCh;
     private char prevNonLegalCh;
-    private boolean useProperInnerClassIndenting = true;
+    
+    // Don't fix stuff if we weren't asked to
+    private boolean useProperInnerClassIndenting = false;
 
     // variables set by ASFormatter - must be updated in activeBeautifierStack
     protected int inLineNumber;
@@ -948,10 +950,19 @@ public class ASBeautifier extends AbstractASBase
             }
             else if (!(i > 0 && !headerStack.get(i - 1).equals(ASResource.AS_OPEN_BRACKET) && headerStack.get(i).equals(ASResource.AS_OPEN_BRACKET)))
             {
-                if (!this.useProperInnerClassIndenting || !headerStack.get(i).equals(ASResource.AS_STATIC))
-                {
-                    ++tabCount;
+                boolean isInnerStatic = false;
+                
+                if (this.useProperInnerClassIndenting) {
+                    if (headerStack.get(i).equals(ASResource.AS_STATIC) && headerStack.size() > i + 1 
+                            && ASResource.AS_CLASS.equals(headerStack.get(i + 1))) {
+                        
+                        isInnerStatic = true;
+                    }
                 }
+                
+                if (!isInnerStatic) {
+                    ++tabCount;      
+                }                
             }
 
             if (!isJavaStyle() && !namespaceIndent && i >= 1 && headerStack.get(i - 1).equals(ASResource.AS_NAMESPACE) && headerStack.get(i).equals(ASResource.AS_OPEN_BRACKET))
